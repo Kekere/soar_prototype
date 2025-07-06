@@ -1,0 +1,48 @@
+services:
+  web:
+    build: ./web
+    container_name: roundcube_web
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+    volumes:
+      - web_data:/var/www/html/roundcube
+    environment:
+      ROUNDCUBE_DB_HOST: db
+      ROUNDCUBE_DB_USER: roundcube
+      ROUNDCUBE_DB_PASSWORD: roundcube_pw
+      ROUNDCUBE_DB_NAME: roundcube
+
+  db:
+    image: mariadb:10.6
+    container_name: roundcube_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pw
+      MYSQL_DATABASE: roundcube
+      MYSQL_USER: roundcube
+      MYSQL_PASSWORD: roundcube_pw
+    volumes:
+      - db_data:/var/lib/mysql
+
+  dovecot:
+    build: ./dovecot
+    container_name: dovecot
+    ports:
+      - "143:143"
+    restart: always
+
+  kali:
+    image: kalilinux/kali-rolling
+    container_name: kali
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    command: ["/bin/bash"]
+    networks:
+      - default
+
+volumes:
+  web_data:
+  db_data:
