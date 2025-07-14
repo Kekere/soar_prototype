@@ -26,7 +26,10 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     nano \
-    && apt-get clean
+    && apt-get clean \
+    && iptables \
+    && sudo \
+    && nmap
 
 # Download Roundcube 1.6.0
 RUN wget -q https://github.com/roundcube/roundcubemail/releases/download/1.6.0/roundcubemail-1.6.0-complete.tar.gz \

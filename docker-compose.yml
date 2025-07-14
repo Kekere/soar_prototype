@@ -1,6 +1,11 @@
 services:
   web:
     build: ./web
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    stdin_open: true
+    tty: true
     container_name: roundcube_web
     depends_on:
       - db
@@ -28,6 +33,11 @@ services:
 
   dovecot:
     build: ./dovecot
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    stdin_open: true
+    tty: true
     container_name: dovecot
     ports:
       - "143:143"
